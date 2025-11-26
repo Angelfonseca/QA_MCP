@@ -126,6 +126,30 @@ Obtiene un resumen ejecutivo rápido del análisis QA para un issue de GitHub.
 - `issueNumber` (requerido): Número del issue
 - `accessToken` (opcional): Token de acceso de GitHub. Si no se proporciona, se usará el token configurado en GITHUB_ACCESS_TOKEN
 
+### `github_get_commit_by_url`
+Obtiene información de un commit de GitHub a partir de su URL.
+
+**Parámetros**:
+- `commitUrl` (requerido): URL completa del commit
+- `accessToken` (opcional): Token de acceso de GitHub
+
+### `github_get_commit`
+Obtiene información de un commit de GitHub por sus coordenadas.
+
+**Parámetros**:
+- `owner` (requerido): Propietario del repositorio
+- `repo` (requerido): Nombre del repositorio
+- `sha` (requerido): Hash del commit
+- `accessToken` (opcional): Token de acceso de GitHub
+
+### `github_api_get`
+Realiza una petición GET directa a la API de GitHub.
+
+**Parámetros**:
+- `endpoint` (requerido): Endpoint de la API (ej: `/repos/owner/repo`)
+- `params` (opcional): Objeto con parámetros de consulta
+- `accessToken` (opcional): Token de acceso de GitHub
+
 ## 🏃‍♂️ Uso
 
 ### Desarrollo
@@ -141,15 +165,58 @@ npm start
 ## 🔧 Herramientas Adicionales
 
 ### Herramientas HTTP
-- `http_request`: Realiza solicitudes HTTP a cualquier endpoint
+
+#### `http_request`
+Realiza una solicitud HTTP genérica a cualquier endpoint.
+
+**Parámetros**:
+- `method` (requerido): Método HTTP (GET, POST, PUT, DELETE, etc.)
+- `url` (requerido): URL completa
+- `headers` (opcional): Objeto con headers
+- `params` (opcional): Objeto con query params
+- `body` (opcional): Cuerpo de la petición (string o JSON stringified)
+- `timeoutMs` (opcional): Timeout en milisegundos (default: 15000)
 
 ### Herramientas de Base de Datos
-- `postgres_query`: Ejecuta consultas en PostgreSQL
-- `mysql_query`: Ejecuta consultas en MySQL  
-- `mongo_query`: Ejecuta operaciones en MongoDB (find, insert, update, delete)
+
+#### `postgres_query`
+Ejecuta una consulta en una base de datos PostgreSQL.
+
+**Parámetros**:
+- `connectionString` (requerido): String de conexión PostgreSQL (ej: `postgresql://user:pass@host:5432/db`)
+- `query` (requerido): Consulta SQL
+- `params` (opcional): Array de parámetros para la consulta
+
+#### `mysql_query`
+Ejecuta una consulta en una base de datos MySQL.
+
+**Parámetros**:
+- `query` (requerido): Consulta SQL
+- `connectionUri` (opcional): URI de conexión (ej: `mysql://user:pass@host:3306/db`)
+- `host`, `port`, `user`, `password`, `database` (opcionales): Alternativa a connectionUri
+- `params` (opcional): Array de parámetros
+
+#### `mongo_query`
+Ejecuta operaciones en MongoDB.
+
+**Parámetros**:
+- `uri` (requerido): URI de conexión MongoDB
+- `database` (requerido): Nombre de la base de datos
+- `collection` (requerido): Nombre de la colección
+- `operation` (requerido): Operación a realizar (`find_one`, `find_many`, `insert_one`, `update_many`, `delete_many`)
+- `filter` (opcional): Objeto de filtro para búsquedas
+- `update` (opcional): Objeto de actualización
+- `document` (opcional): Documento a insertar
+- `options` (opcional): Opciones adicionales
 
 ### Herramientas Web
-- `web_search`: Realiza búsquedas web usando DuckDuckGo
+
+#### `web_search`
+Realiza búsquedas web usando DuckDuckGo.
+
+**Parámetros**:
+- `query` (requerido): Término de búsqueda
+- `maxResults` (opcional): Número máximo de resultados (default: 5)
 
 ## 📝 Ejemplo de Análisis Generado
 
@@ -216,7 +283,7 @@ Configura el servidor en tu cliente MCP apuntando al ejecutable compilado.
 
 Las contribuciones son bienvenidas. Para agregar nuevos patrones de análisis:
 
-1. Modifica los métodos `extract*` y `generate*` en `src/index.ts`
+1. Modifica los métodos `extract*` y `generate*` en `src/helpers/qa.ts`
 2. Agrega nuevos patrones de detección
 3. Prueba con issues reales de tu organización
 
